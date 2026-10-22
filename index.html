@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Barbearia Navalha de Ouro – Agende seu corte</title>
+<meta name="google-site-verification" content="mfDCPnALP5-LO7NuQxuQu7cBJUYpDhu_wqi_66B5HRo">
+<style>
+:root{--bg:#f6f2ea;--card:#fff;--ink:#1b1812;--mute:#6f685a;--line:#e2dccd;--gold:#b8862b;--goldink:#fff;--off:#ece6d8;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14120e;--card:#1e1b15;--ink:#f3ede0;--mute:#a79f8d;--line:#322d22;--gold:#d4a24a;--goldink:#1b1812;--off:#2a261d;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14120e;--card:#1e1b15;--ink:#f3ede0;--mute:#a79f8d;--line:#322d22;--gold:#d4a24a;--goldink:#1b1812;--off:#2a261d;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1,h2{font-family:Georgia,"Times New Roman",serif;margin:0}
+.hero{background:#1b1812;color:#f3ede0;text-align:center;padding:44px 20px 36px}
+.hero h1{font-size:clamp(28px,6vw,44px);color:#d4a24a}
+.hero p{margin:8px auto 20px;max-width:460px;color:#cfc7b5}
+.btn{display:inline-block;border:0;border-radius:10px;padding:13px 22px;font:600 16px inherit;background:var(--gold);color:var(--goldink);text-decoration:none;cursor:pointer}
+.btn.wa{background:#25a244;color:#fff}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+main{max-width:760px;margin:0 auto;padding:20px 16px 40px}
+section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+h2{font-size:20px;margin-bottom:12px}
+h2 span{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--gold);color:var(--goldink);font:700 14px system-ui;margin-right:8px}
+.grid{display:grid;gap:10px;grid-template-columns:repeat(2,1fr)}
+.grid.bar{grid-template-columns:1fr}
+@media(min-width:560px){.grid{grid-template-columns:repeat(3,1fr)}.grid.bar{grid-template-columns:repeat(3,1fr)}}
+.card{display:flex;flex-direction:column;gap:4px;text-align:left;width:100%;background:var(--bg);color:var(--ink);border:2px solid var(--line);border-radius:12px;padding:8px;font:inherit;cursor:pointer}
+.card.sel{border-color:var(--gold);background:var(--off)}
+.card .img{border-radius:8px;overflow:hidden;background:#efe7d6;aspect-ratio:1}
+.card .img svg,.card .img img{display:block;width:100%;height:100%;object-fit:cover}
+.card .nm{font-size:15px;line-height:1.25}
+.card .pr{color:var(--gold)}
+.card small{color:var(--mute);font-size:13px;line-height:1.35}
+.card.b{flex-direction:row;gap:12px;align-items:center}
+.card.b .img{width:84px;flex:none;border-radius:50%}
+.days,.times{display:flex;gap:8px;flex-wrap:wrap}
+.days{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px}
+.day{flex:0 0 auto;min-width:62px;text-align:center;padding:8px 6px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}
+.day small{display:block;color:var(--mute);text-transform:uppercase;font-size:11px}
+.day.sel{border-color:var(--gold);background:var(--off)}
+.day:disabled{opacity:.4;cursor:not-allowed}
+.t{padding:9px 14px;border-radius:8px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}
+.t.sel{border-color:var(--gold);background:var(--gold);color:var(--goldink)}
+.t:disabled{opacity:.4;cursor:not-allowed}
+.hint{color:var(--mute);font-size:14px;margin:8px 0 0}
+input{width:100%;padding:12px;margin-bottom:10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.sum{background:var(--off);border-radius:10px;padding:12px;margin:4px 0 12px;font-size:15px}
+.info{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.info h3{margin:0 0 4px;font-size:15px;color:var(--gold)}
+.info p{margin:0;color:var(--mute)}
+#ok{display:none;border-color:var(--gold)}
+footer{text-align:center;color:var(--mute);font-size:13px;padding:0 16px 30px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Navalha de Ouro</h1>
+  <p>Barbearia tradicional. Escolha o corte, o barbeiro e o horário e envie seu pedido pelo WhatsApp.</p>
+  <a class="btn" href="#agendar">Agendar agora</a>
+</header>
+<main id="agendar">
+  <section><h2><span>1</span>Escolha o corte</h2><div class="grid" id="svc"></div></section>
+  <section><h2><span>2</span>Escolha o barbeiro</h2><div class="grid bar" id="bar"></div></section>
+  <section><h2><span>3</span>Dia e horário</h2>
+    <div class="days" id="days"></div>
+    <div class="times" id="times" style="margin-top:12px"></div>
+    <p class="hint">O horário é confirmado pela barbearia no WhatsApp.</p></section>
+  <section id="form"><h2><span>4</span>Seus dados</h2>
+    <input id="nome" placeholder="Seu nome" autocomplete="name" maxlength="60">
+    <input id="tel" placeholder="Seu WhatsApp com DDD" inputmode="tel" autocomplete="tel" maxlength="20">
+    <div class="sum" id="sum">Selecione corte, barbeiro, dia e horário.</div>
+    <button class="btn" id="go" disabled style="width:100%">Ver resumo do pedido</button></section>
+  <section id="ok"><h2>Pedido pronto ✅</h2><p id="okmsg" style="white-space:pre-line;font-size:17px;line-height:1.7"></p>
+    <pre id="msgbox" style="white-space:pre-wrap;background:var(--off);border-radius:10px;padding:12px;font:inherit;font-size:15px;margin:12px 0"></pre>
+    <button class="btn" id="cp" style="margin:0 8px 8px 0">Copiar mensagem</button><a class="btn wa" id="okwa" target="_blank" rel="noopener">Abrir WhatsApp</a></section>
+  <section><h2>Onde estamos</h2><div class="info">
+    <div><h3>Endereço</h3><p id="addr"></p></div>
+    <div><h3>Funcionamento</h3><p>Seg a Sex: 9h às 19h<br>Sábado: 9h às 17h<br>Domingo: fechado</p></div>
+    <div><h3>Fale conosco</h3><a class="btn wa" id="wa" target="_blank" rel="noopener">Chamar no WhatsApp</a></div>
+  </div></section>
+</main>
+<footer>© Navalha de Ouro · Todos os direitos reservados</footer>
+<script>
+// ===== EDITE AQUI os dados da barbearia =====
+const CFG={addr:"Rua José Carlos, 147",link:"https://wa.me/5511992211409",
+ hours:{1:[9,19],2:[9,19],3:[9,19],4:[9,19],5:[9,19],6:[9,17]}}; // 0=domingo (fechado)
+const SERVICES=[
+ {id:"social",n:"Corte social",p:40,d:"Clássico, com risca lateral"},
+ {id:"degrade",n:"Degradê",p:45,d:"Laterais em fade, topo curto"},
+ {id:"navalhado",n:"Navalhado",p:45,d:"Contornos marcados na navalha"},
+ {id:"tesoura",n:"Corte na tesoura",p:50,d:"Mais volume, do início ao fim"},
+ {id:"maquina",n:"Corte na máquina",p:30,d:"Um só pente, bem curto"},
+ {id:"infantil",n:"Corte infantil",p:35,d:"Até 10 anos"},
+ {id:"barba",n:"Barba",p:30,d:"Toalha quente e navalha"},
+ {id:"combo",n:"Corte + barba",p:70,d:"Corte social e barba"},
+ {id:"sobrancelha",n:"Sobrancelha",p:15,d:"Alinhada na navalha"},
+ {id:"pezinho",n:"Pezinho",p:15,d:"Acabamento da nuca"}];
+// photo: troque null por uma foto (endereço de imagem embutida) para usar a foto real
+const BARBERS=[
+ {id:"carlos",n:"Carlos",photo:null,d:"12 anos de experiência. Especialista em cortes clássicos e navalhado."},
+ {id:"rafael",n:"Rafael",photo:null,d:"8 anos de experiência. Mestre do degradê e dos cortes modernos."},
+ {id:"diego",n:"Diego",photo:null,d:"6 anos de experiência. Barba e acabamento com toalha quente."}];
+// ============================================
+const $=id=>document.getElementById(id);
+const s={svc:null,bar:null,date:null,time:null};
+const brl=v=>"R$ "+v.toFixed(2).replace(".",",");
+const pad=n=>String(n).padStart(2,"0");
+const dkey=d=>d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+const WD=["dom","seg","ter","qua","qui","sex","sáb"],WDL=["domingo","segunda","terça","quarta","quinta","sexta","sábado"];
+// ----- ilustrações dos cortes (desenhadas em SVG) -----
+const HR="#2b231a",SK="#e2b58c",SD="#d3a077";
+const BEARD='<path d="M28 58C28 84 44 91 50 91C56 91 72 84 72 58C68 70 60 68 50 68C40 68 32 70 28 58Z" fill="'+HR+'"/>';
+const SOCIAL='<path d="M27 54C22 22 78 18 73 54C70 40 62 34 46 34C36 36 30 44 27 54Z" fill="'+HR+'"/><path d="M46 34C50 30 58 31 62 35" stroke="'+SK+'" stroke-width="1.6" fill="none"/>';
+const HAIR={
+ social:SOCIAL,
+ degrade:'<path d="M33 42C32 20 68 20 67 42C60 33 40 33 33 42Z" fill="'+HR+'"/><path d="M28 58C25 40 29 36 33 42L33 60ZM72 58C75 40 71 36 67 42L67 60Z" fill="'+HR+'" opacity=".35"/>',
+ navalhado:'<path d="M29 50C26 26 74 26 71 50C66 38 34 38 29 50Z" fill="'+HR+'"/><path d="M30 50L34 64M70 50L66 64" stroke="'+HR+'" stroke-width="2.6"/>',
+ tesoura:'<path d="M25 56C14 30 34 12 52 16C72 12 88 32 75 56C72 40 64 34 50 34C36 34 28 42 25 56Z" fill="'+HR+'"/>',
+ maquina:'<path d="M28 50C26 26 74 26 72 50C66 38 34 38 28 50Z" fill="'+HR+'" opacity=".55"/>',
+ infantil:'<path d="M28 52C26 24 74 24 72 52C66 42 56 40 50 42C44 40 34 42 28 52Z" fill="#6b4a2a"/><circle cx="40" cy="66" r="1" fill="#b98860"/><circle cx="60" cy="66" r="1" fill="#b98860"/><circle cx="45" cy="68" r="1" fill="#b98860"/><circle cx="55" cy="68" r="1" fill="#b98860"/>',
+ barba:'<path d="M28 50C26 26 74 26 72 50C66 38 34 38 28 50Z" fill="'+HR+'" opacity=".55"/>'+BEARD,
+ combo:SOCIAL+BEARD,
+ sobrancelha:'<path d="M28 50C26 26 74 26 72 50C66 38 34 38 28 50Z" fill="'+HR+'" opacity=".55"/><ellipse cx="42" cy="48" rx="9" ry="4.5" fill="none" stroke="#d4a24a" stroke-width="1.5" stroke-dasharray="3 2"/><ellipse cx="58" cy="48" rx="9" ry="4.5" fill="none" stroke="#d4a24a" stroke-width="1.5" stroke-dasharray="3 2"/>'
+};
+function art(id){
+ const shoulders='<path d="M10 100C12 86 34 84 50 90C66 84 88 86 90 100Z" fill="#3a352c"/>';
+ if(id==="pezinho")return '<svg viewBox="0 0 100 100">'+shoulders+'<rect x="40" y="70" width="20" height="22" fill="'+SD+'"/><ellipse cx="50" cy="46" rx="27" ry="30" fill="'+HR+'"/><path d="M33 72C37 66 63 66 67 72L62 86C56 90 44 90 38 86Z" fill="'+SD+'"/><path d="M33 72C40 66 60 66 67 72" stroke="'+HR+'" stroke-width="2" fill="none"/></svg>';
+ const brow=id==="sobrancelha"?"":'<path d="M36 49Q42 46 47 49M53 49Q58 46 64 49" stroke="'+HR+'" stroke-width="1.8" fill="none"/>';
+ return '<svg viewBox="0 0 100 100">'+shoulders+'<rect x="42" y="78" width="16" height="14" fill="'+SD+'"/><ellipse cx="50" cy="56" rx="22" ry="27" fill="'+SK+'"/><circle cx="28" cy="58" r="4" fill="'+SD+'"/><circle cx="72" cy="58" r="4" fill="'+SD+'"/><circle cx="42" cy="56" r="1.8" fill="'+HR+'"/><circle cx="58" cy="56" r="1.8" fill="'+HR+'"/>'+brow+'<path d="M44 72Q50 75 56 72" stroke="#8a5a3c" stroke-width="1.6" fill="none"/>'+(HAIR[id]||"")+'</svg>';
+}
+function avatar(b){
+ if(b.photo)return '<img src="'+b.photo+'" alt="Foto de '+b.n+'">';
+ return '<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#d4a24a"/><path d="M8 100C10 82 34 78 50 84C66 78 90 82 92 100Z" fill="#1b1812"/><ellipse cx="50" cy="46" rx="19" ry="23" fill="'+SK+'"/><path d="M30 42C28 18 72 18 70 42C64 30 36 30 30 42Z" fill="'+HR+'"/><path d="M36 60C42 66 58 66 64 60C62 68 56 72 50 72C44 72 38 68 36 60Z" fill="'+HR+'"/></svg>';
+}
+let taken=new Set();
+const slotKey=t=>s.date+"_"+s.bar+"_"+t.replace(":","");
+$("addr").textContent=CFG.addr;
+$("wa").href=CFG.link+"?text="+encodeURIComponent("Olá! Gostaria de mais informações.");
+function mk(list,box,key,html,cls){
+ $(box).innerHTML="";
+ list.forEach(x=>{const b=document.createElement("button");b.className="card "+cls+(s[key]===x.id?" sel":"");b.innerHTML=html(x);
+  b.onclick=()=>{s[key]=x.id;s.time=null;draw()};$(box).appendChild(b)});
+}
+function days(){
+ const now=new Date();$("days").innerHTML="";
+ for(let i=0;i<14;i++){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()+i),k=dkey(d),b=document.createElement("button");
+  b.className="day"+(s.date===k?" sel":"");b.disabled=!CFG.hours[d.getDay()];
+  b.innerHTML="<small>"+WD[d.getDay()]+"</small><b>"+pad(d.getDate())+"/"+pad(d.getMonth()+1)+"</b>";
+  b.onclick=()=>{s.date=k;s.time=null;draw()};$("days").appendChild(b)}
+}
+function times(){
+ const box=$("times");box.innerHTML="";
+ if(!s.date){box.innerHTML='<p class="hint">Escolha o dia para ver os horários.</p>';return}
+ const [y,m,d]=s.date.split("-").map(Number),h=CFG.hours[new Date(y,m-1,d).getDay()],now=new Date();
+ for(let min=h[0]*60;min<h[1]*60;min+=30){
+  const hh=Math.floor(min/60),t=pad(hh)+":"+pad(min%60),b=document.createElement("button");
+  b.className="t"+(s.time===t?" sel":"");b.textContent=t;b.disabled=new Date(y,m-1,d,hh,min%60)<=now;
+  b.onclick=()=>{s.time=t;draw()};box.appendChild(b)}
+}
+function summary(){
+ const sv=SERVICES.find(x=>x.id===s.svc),br=BARBERS.find(x=>x.id===s.bar);
+ if(!(sv&&br&&s.date&&s.time)){$("sum").textContent="Selecione corte, barbeiro, dia e horário.";$("go").disabled=true;return}
+ const [y,m,d]=s.date.split("-").map(Number);
+ $("sum").innerHTML="<b></b>";
+ $("sum").firstChild.textContent=sv.n+" com "+br.n+" · "+WDL[new Date(y,m-1,d).getDay()]+", "+pad(d)+"/"+pad(m)+" às "+s.time+" · "+brl(sv.p);
+ $("go").disabled=false;
+}
+function draw(){
+ mk(SERVICES,"svc","svc",x=>'<div class="img">'+art(x.id)+'</div><b class="nm">'+x.n+'</b><small>'+x.d+'</small><b class="pr">'+brl(x.p)+'</b>',"");
+ mk(BARBERS,"bar","bar",x=>'<div class="img">'+avatar(x)+'</div><span><b class="nm">'+x.n+'</b><br><small>'+x.d+'</small></span>',"b");
+ days();times();summary();
+}
+$("go").onclick=()=>{
+ const nome=$("nome").value.trim(),tel=$("tel").value.trim();
+ if(nome.length<2||tel.replace(/\D/g,"").length<10){alert("Preencha seu nome e WhatsApp com DDD.");return}
+ const sv=SERVICES.find(x=>x.id===s.svc),br=BARBERS.find(x=>x.id===s.bar),[y,m,d]=s.date.split("-").map(Number);
+ const msg="Olá! Gostaria de agendar na Navalha de Ouro:\n• Corte: "+sv.n+" ("+brl(sv.p)+")\n• Barbeiro: "+br.n+"\n• Dia: "+pad(d)+"/"+pad(m)+"\n• Horário: "+s.time+"\n• Nome: "+nome+"\n• Telefone: "+tel+"\nPode confirmar?";
+ $("okmsg").textContent="Nome: "+nome+"\nCorte: "+sv.n+"\nBarbeiro: "+br.n+"\nDia: "+pad(d)+"/"+pad(m)+"\nHorário: "+s.time+"\nValor: "+brl(sv.p)+"\n\nToque em Abrir WhatsApp: a mensagem já vai pronta, é só enviar. Se não aparecer, copie o texto abaixo e cole na conversa.";
+ $("msgbox").textContent=msg;$("okwa").href=CFG.link+"?text="+encodeURIComponent(msg);
+ const cp=async()=>{try{await navigator.clipboard.writeText(msg);$("cp").textContent="Copiado ✅"}catch(e){$("cp").textContent="Selecione e copie o texto acima"}};
+ $("cp").onclick=cp;$("okwa").onclick=cp;
+ $("ok").style.display="block";$("ok").scrollIntoView({behavior:"smooth"});
+};
+draw();
+</script>
+</body>
+</html>
